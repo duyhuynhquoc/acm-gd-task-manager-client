@@ -16,10 +16,6 @@ export default function App() {
 		});
 	}, []);
 
-	useEffect(() => {
-		window.localStorage.setItem("tasks", JSON.stringify(tasks));
-	}, [tasks]);
-
 	const createTask = (newTask) => {
 		setTasks([...tasks, newTask]);
 
