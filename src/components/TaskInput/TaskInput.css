@@ -1,0 +1,24 @@
+.TaskInput {
+  text-align: left;
+}
+
+.TaskInput .FormGroup {
+  display: flex;
+  align-items: center;
+}
+
+.fa-icon {
+  font-size: 1.2rem;
+}
+
+.task-detail {
+  display: none;
+}
+
+.task-detail.show {
+  display: block;
+}
+
+input[type="date"] {
+  color: #6c757d;
+}

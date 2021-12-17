@@ -1,0 +1,21 @@
+.TaskList .availability {
+	font-weight: 700;
+	color: #ff4d4d !important;
+}
+
+.TaskList .availability.available {
+	color: #009933 !important;
+}
+
+.TaskList .delete-btn {
+	color: #ff4d4d;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-left: 10%;
+}
+
+.TaskList .delete-btn-icon {
+	font-size: 1.4rem;
+}
