@@ -32,6 +32,13 @@ export default function App() {
 			if (task.awaiting === deleteId) {
 				task.availability = "Available";
 			}
+			axios
+				.put(`${url}/api/`, {
+					updateId: task.taskId,
+					updateField: "availability",
+					updateValue: "Available",
+				})
+				.then((res) => {});
 			return task;
 		});
 
