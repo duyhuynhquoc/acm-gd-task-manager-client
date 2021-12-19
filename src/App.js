@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import url from "./url";
+import url from "./serverUrl";
 
 import "./App.css";
 import NavBar from "./components/Navbar/Navbar";
@@ -17,7 +17,7 @@ export default function App() {
 	}, []);
 
 	const createTask = (newTask) => {
-		setTasks([...tasks, newTask]);
+		setTasks([newTask, ...tasks]);
 
 		// Create new task on database
 		axios.post(`${url}/api/`, newTask).then((res) => {});
