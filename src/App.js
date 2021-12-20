@@ -27,41 +27,48 @@ export default function App() {
 		// Delete task by taskId
 		let newTasks = tasks.filter((task) => task.taskId !== deleteId);
 
+		let updateAvailabilityTask = [];
+
 		// Update tasks' availability
 		newTasks.map((task) => {
 			if (task.awaiting === deleteId) {
 				task.availability = "Available";
 			}
-			axios
-				.put(`${url}/api/`, {
-					updateId: task.taskId,
-					updateField: "availability",
-					updateValue: "Available",
-				})
-				.then((res) => {});
+
+			updateAvailabilityTask.push({
+				updateId: task.taskId,
+				updateField: "availability",
+				updateValue: "Available",
+			});
+
 			return task;
 		});
 
 		setTasks(newTasks);
 
+		axios
+			.put(`${url}/api/`, { updateTasks: updateAvailabilityTask })
+			.then((res) => {});
+
 		// Delete task on database
 		axios.delete(`${url}/api/`, { data: { deleteId } }).then((res) => {});
 	};
 
-	const updateTask = (updateId, updateField, updateValue) => {
+	const updateTasks = (updateTasks) => {
 		let newTasks = tasks.map((task) => {
-			if (task.taskId === updateId) {
-				task[updateField] = updateValue;
-			}
+			updateTasks.forEach((t) => {
+				if (task.taskId === t.updateId) {
+					task[t.updateField] = t.updateValue;
+				}
+			});
+
 			return task;
 		});
 
 		setTasks(newTasks);
 
 		// Update task on database
-		axios
-			.put(`${url}/api/`, { updateId, updateField, updateValue })
-			.then((res) => {});
+		axios.put(`${url}/api/`, { updateTasks }).then((res) => {});
 	};
 
 	return (
@@ -72,7 +79,7 @@ export default function App() {
 				<TaskList
 					tasks={tasks}
 					deleteTask={deleteTask}
-					updateTask={updateTask}
+					updateTasks={updateTasks}
 					setTasks={setTasks}
 				/>
 			</div>

@@ -51,23 +51,41 @@ export default function TaskList(props) {
 			e.preventDefault();
 			let newTasks = [...props.tasks];
 
+			let updateTasks = [];
+
+			props.updateTasks(updateTasks);
+
 			newTasks.map((t) => {
 				if (t.taskId == task.taskId) {
 					t.status = editStatusInput.value;
-					props.updateTask(t.taskId, "status", editStatusInput.value);
+					updateTasks.push({
+						updateId: t.taskId,
+						updateField: "status",
+						updateValue: editStatusInput.value,
+					});
 				} else {
 					if (t.awaiting == task.taskId) {
 						if (editStatusInput.value === "Done") {
 							t.availability = "Available";
-							props.updateTask(t.taskId, "availability", "Available");
+							updateTasks.push({
+								updateId: t.taskId,
+								updateField: "availability",
+								updateValue: "Available",
+							});
 						} else {
 							t.availability = "Unavailable";
-							props.updateTask(t.taskId, "availability", "Unavailable");
+							updateTasks.push({
+								updateId: t.taskId,
+								updateField: "availability",
+								updateValue: "Unavailable",
+							});
 						}
 					}
 				}
 				return t;
 			});
+			console.log(updateTasks);
+			props.updateTasks(updateTasks);
 
 			props.setTasks(newTasks);
 			taskCell.innerHTML = editStatusInput.value;
@@ -101,7 +119,15 @@ export default function TaskList(props) {
 		const submitTaskName = (e) => {
 			e.preventDefault();
 
-			props.updateTask(task.taskId, "taskName", editTaskNameInput.value);
+			let updateTasks = [
+				{
+					updateId: task.taskId,
+					updateField: "taskName",
+					updateValue: editTaskNameInput.value,
+				},
+			];
+
+			props.updateTasks(updateTasks);
 
 			editTaskNameInput.removeEventListener("focusout", submitTaskName);
 
@@ -138,7 +164,15 @@ export default function TaskList(props) {
 		const submitDeadline = (e) => {
 			e.preventDefault();
 
-			props.updateTask(task.taskId, "deadline", editDeadlineInput.value);
+			let updateTasks = [
+				{
+					updateId: task.taskId,
+					updateField: "deadline",
+					updateValue: editDeadlineInput.value,
+				},
+			];
+
+			props.updateTasks(updateTasks);
 
 			editDeadlineInput.removeEventListener("focusout", submitDeadline);
 
@@ -176,7 +210,15 @@ export default function TaskList(props) {
 			e.preventDefault();
 			let newTask = { ...task, assignee: editAssigneeInput.value };
 
-			props.updateTask(task.taskId, "assignee", editAssigneeInput.value);
+			let updateTasks = [
+				{
+					updateId: task.taskId,
+					updateField: "assignee",
+					updateValue: editAssigneeInput.value,
+				},
+			];
+
+			props.updateTasks(updateTasks);
 
 			editAssigneeInput.removeEventListener("focusout", submitAssignee);
 
@@ -213,7 +255,15 @@ export default function TaskList(props) {
 		const submitAssigner = (e) => {
 			e.preventDefault();
 
-			props.updateTask(task.taskId, "assigner", editAssignerInput.value);
+			let updateTasks = [
+				{
+					updateId: task.taskId,
+					updateField: "assigner",
+					updateValue: editAssignerInput.value,
+				},
+			];
+
+			props.updateTasks(updateTasks);
 
 			editAssignerInput.removeEventListener("focusout", submitAssigner);
 
@@ -258,8 +308,20 @@ export default function TaskList(props) {
 				availability = awaiting.status === "Done" ? "Available" : "Unavailable";
 			}
 
-			props.updateTask(task.taskId, "awaiting", awaiting.taskId);
-			props.updateTask(task.taskId, "availability", availability);
+			let updateTasks = [
+				{
+					updateId: task.taskId,
+					updateField: "awaiting",
+					updateValue: awaiting.taskId,
+				},
+				{
+					updateId: task.taskId,
+					updateField: "availability",
+					updateValue: availability,
+				},
+			];
+
+			props.updateTasks(updateTasks);
 
 			editAwaitingInput.removeEventListener("focusout", submitAwaiting);
 
@@ -296,7 +358,15 @@ export default function TaskList(props) {
 		const submitNote = (e) => {
 			e.preventDefault();
 
-			props.updateTask(task.taskId, "note", editNoteInput.value);
+			let updateTasks = [
+				{
+					updateId: task.taskId,
+					updateField: "note",
+					updateValue: editNoteInput.value,
+				},
+			];
+
+			props.updateTasks(updateTasks);
 
 			editNoteInput.removeEventListener("focusout", submitNote);
 
