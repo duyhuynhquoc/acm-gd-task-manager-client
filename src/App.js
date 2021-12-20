@@ -33,13 +33,13 @@ export default function App() {
 		newTasks.map((task) => {
 			if (task.awaiting === deleteId) {
 				task.availability = "Available";
-			}
 
-			updateAvailabilityTask.push({
-				updateId: task.taskId,
-				updateField: "availability",
-				updateValue: "Available",
-			});
+				updateAvailabilityTask.push({
+					updateId: task.taskId,
+					updateField: "availability",
+					updateValue: "Available",
+				});
+			}
 
 			return task;
 		});

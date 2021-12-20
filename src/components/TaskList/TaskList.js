@@ -299,8 +299,10 @@ export default function TaskList(props) {
 
 		const submitAwaiting = (e) => {
 			e.preventDefault();
+
 			let availability = task.availability;
 			let awaiting = props.tasks[editAwaitingInput.value - 1];
+
 			if (!awaiting) {
 				awaiting = "";
 				availability = "Available";
