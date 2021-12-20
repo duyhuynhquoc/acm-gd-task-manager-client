@@ -164,11 +164,13 @@ export default function TaskList(props) {
 		const submitDeadline = (e) => {
 			e.preventDefault();
 
+			let newDeadline = editDeadlineInput.value;
+
 			let updateTasks = [
 				{
 					updateId: task.taskId,
 					updateField: "deadline",
-					updateValue: editDeadlineInput.value,
+					updateValue: newDeadline,
 				},
 			];
 
@@ -176,7 +178,13 @@ export default function TaskList(props) {
 
 			editDeadlineInput.removeEventListener("focusout", submitDeadline);
 
-			taskCell.innerHTML = editDeadlineInput.value;
+			taskCell.innerHTML =
+				newDeadline === ""
+					? ""
+					: `${newDeadline.slice(5, 7)}/${newDeadline.slice(
+							8,
+							10
+					  )}/${newDeadline.slice(0, 4)}`;
 		};
 
 		// Focus on input
@@ -434,7 +442,12 @@ export default function TaskList(props) {
 									{task.taskName}
 								</td>
 								<td onDoubleClick={(event) => editDeadline(event, task)}>
-									{task.deadline}
+									{task.deadline === ""
+										? ""
+										: `${task.deadline.slice(5, 7)}/${task.deadline.slice(
+												8,
+												10
+										  )}/${task.deadline.slice(0, 4)}`}
 								</td>
 								<td onDoubleClick={(event) => editAssignee(event, task)}>
 									{task.assignee}
