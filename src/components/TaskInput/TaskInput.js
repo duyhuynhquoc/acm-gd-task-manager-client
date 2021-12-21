@@ -8,13 +8,16 @@ import {
 	FaUser,
 	FaPen,
 	FaCheckSquare,
+	FaUserFriends,
 } from "react-icons/fa";
+
 import "./TaskInput.css";
 
 export default function TaskInput(props) {
 	const [task, setTask] = useState({
 		taskName: "",
 		deadline: "",
+		board: "",
 		assignee: "",
 		assigner: "",
 		awaiting: "",
@@ -63,6 +66,7 @@ export default function TaskInput(props) {
 			availability: availability,
 			taskName: task.taskName,
 			deadline: task.deadline,
+			board: task.board,
 			assignee: task.assignee,
 			assigner: task.assigner,
 			awaiting: awaiting ? awaiting.taskId : "",
@@ -74,6 +78,7 @@ export default function TaskInput(props) {
 		setTask({
 			taskName: "",
 			deadline: "",
+			board: "",
 			assignee: "",
 			assigner: "",
 			awaiting: "",
@@ -96,16 +101,40 @@ export default function TaskInput(props) {
 					/>
 				</Form.Group>
 				<div className="task-detail">
-					<Form.Group className="FormGroup mb-3">
-						<FaCalendarCheck className="fa-icon me-2" />
-						<FormControl
-							type="date"
-							value={task.deadline}
-							onChange={(event) => {
-								handleChange(event, "deadline");
-							}}
-						/>
-					</Form.Group>
+					<Row>
+						<Col>
+							<Form.Group className="FormGroup mb-3">
+								<FaCalendarCheck className="fa-icon me-2" />
+								<FormControl
+									type="date"
+									value={task.deadline}
+									onChange={(event) => {
+										handleChange(event, "deadline");
+									}}
+								/>
+							</Form.Group>
+						</Col>
+						<Col>
+							<Form.Group className="FormGroup mb-3">
+								<FaUserFriends
+									style={{ fontSize: "1.6rem" }}
+									className="fa-icon me-2"
+								/>
+								<Form.Select
+									aria-label="Default select example"
+									onChange={(event) => {
+										handleChange(event, "board");
+									}}
+								>
+									<option>Board</option>
+									<option value="Expertise">Expertise</option>
+									<option value="Logistics">Logistics</option>
+									<option value="Communication">Communication</option>
+								</Form.Select>
+							</Form.Group>
+						</Col>
+					</Row>
+
 					<Row>
 						<Col>
 							<Form.Group className="FormGroup mb-3">

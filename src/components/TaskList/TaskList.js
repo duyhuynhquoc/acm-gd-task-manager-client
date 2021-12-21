@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 import { AiFillCloseCircle } from "react-icons/ai";
+import TaskFilter from "../TaskFilter/TaskFilter";
 
 import "./TaskList.css";
 
@@ -403,6 +404,7 @@ export default function TaskList(props) {
 
 	return (
 		<div className="TaskList">
+			<TaskFilter />
 			<Table striped responsive hover>
 				<thead>
 					<tr>
