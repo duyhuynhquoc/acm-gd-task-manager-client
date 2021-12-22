@@ -411,7 +411,7 @@ export default function TaskList(props) {
 		const taskCell = event.target;
 
 		// Get awaiting value
-		let awaiting = task.awaiting;
+		let awaiting = taskCell.textContent;
 
 		// Change text into input
 		taskCell.innerHTML = `<form id="edit-awaiting-form"><input type="text" id="edit-awaiting-input" autocomplete="off" /></form>`;
@@ -421,6 +421,7 @@ export default function TaskList(props) {
 
 			let availability = task.availability;
 			let awaiting = tasks[editAwaitingInput.value - 1];
+			console.log(awaiting);
 
 			if (!awaiting) {
 				awaiting = "";
@@ -515,7 +516,7 @@ export default function TaskList(props) {
 	return (
 		<div className="TaskList">
 			<TaskFilter updateFilters={updateFilters} />
-			<Table striped responsive hover>
+			<Table striped responsive hover bordered>
 				<thead>
 					<tr>
 						<th></th>
