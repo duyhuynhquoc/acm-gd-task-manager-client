@@ -11,7 +11,6 @@ export default function App() {
 	const [tasks, setTasks] = useState([]);
 
 	useEffect(() => {
-		console.log(process.env);
 		axios.get(`${url}/api/`).then((res) => {
 			setTasks(res.data);
 		});
