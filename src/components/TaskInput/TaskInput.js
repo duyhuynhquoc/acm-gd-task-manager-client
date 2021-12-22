@@ -87,7 +87,7 @@ export default function TaskInput(props) {
 	};
 
 	return (
-		<div tabIndex="1" className="TaskInput pb-4 col-lg-4 col-md-6">
+		<Col tabIndex="1" className="TaskInput pb-4" md={6} lg={4}>
 			<Form onSubmit={handleSubmit}>
 				<Form.Group className="FormGroup mb-3">
 					<FaTasks className="fa-icon me-2" />
@@ -102,7 +102,7 @@ export default function TaskInput(props) {
 				</Form.Group>
 				<div className="task-detail">
 					<Row>
-						<Col>
+						<Col sm={6}>
 							<Form.Group className="FormGroup mb-3">
 								<FaCalendarCheck className="fa-icon me-2" />
 								<FormControl
@@ -114,17 +114,15 @@ export default function TaskInput(props) {
 								/>
 							</Form.Group>
 						</Col>
-						<Col>
+						<Col sm={6}>
 							<Form.Group className="FormGroup mb-3">
-								<FaUserFriends
-									style={{ fontSize: "1.6rem" }}
-									className="fa-icon me-2"
-								/>
+								<FaUserFriends className="fa-icon me-2" />
 								<Form.Select
 									aria-label="Default select example"
 									onChange={(event) => {
 										handleChange(event, "board");
 									}}
+									value={task.board}
 								>
 									<option>Board</option>
 									<option value="Expertise">Expertise</option>
@@ -136,7 +134,7 @@ export default function TaskInput(props) {
 					</Row>
 
 					<Row>
-						<Col>
+						<Col sm={6}>
 							<Form.Group className="FormGroup mb-3">
 								<FaUser className="fa-icon me-2" />
 								<FormControl
@@ -149,7 +147,7 @@ export default function TaskInput(props) {
 								/>
 							</Form.Group>
 						</Col>
-						<Col>
+						<Col sm={6}>
 							<Form.Group className="FormGroup mb-3">
 								<FaUser className="fa-icon me-2" />
 								<FormControl
@@ -193,6 +191,6 @@ export default function TaskInput(props) {
 					</Button>
 				</div>
 			</Form>
-		</div>
+		</Col>
 	);
 }

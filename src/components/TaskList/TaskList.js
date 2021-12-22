@@ -408,15 +408,18 @@ export default function TaskList(props) {
 			<Table striped responsive hover>
 				<thead>
 					<tr>
+						<th></th>
 						<th>Id</th>
-						<th>Status</th>
-						<th>Availability</th>
-						<th>Task</th>
-						<th>Deadline</th>
-						<th>Assignee</th>
-						<th>Assigner</th>
-						<th>Awaiting</th>
-						<th>Note</th>
+						<th className="col-sm-1">Status</th>
+						<th className="">Availability</th>
+						<th className="col-sm-3">Task</th>
+						<th className="col-sm-1">Deadline</th>
+						<th className="col-sm-1">Assignee</th>
+						<th className="col-sm-1">Assigner</th>
+						<th className="col-sm-1" colSpan="2">
+							Awaiting
+						</th>
+						<th className="col-sm-3">Note</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -426,16 +429,22 @@ export default function TaskList(props) {
 						let classList = colorTaskListRow(task);
 
 						let awaitingTask = awatingTask(task);
+						let board = task.board.slice(0, 3);
 
 						return (
 							<tr className={classList} key={index + 1}>
+								<td>
+									<div className={`${board}`}>{board}</div>
+								</td>
 								<td>{index + 1}</td>
 								<td onDoubleClick={(event) => editStatus(event, task)}>
 									{task.status}
 								</td>
 								<td
 									className={`availability${
-										task.availability === "Available" ? " available" : ""
+										task.availability === "Available"
+											? " greenText"
+											: " redText"
 									}`}
 								>
 									{task.availability}
@@ -459,6 +468,19 @@ export default function TaskList(props) {
 								</td>
 								<td onDoubleClick={(event) => editAwaiting(event, task)}>
 									{awaitingTask}
+								</td>
+								<td
+									className={`awaitingStatus${
+										awaitingTask === ""
+											? ""
+											: props.tasks[awaitingTask - 1].status === "Done"
+											? " greenText"
+											: " redText"
+									}`}
+								>
+									{awaitingTask === ""
+										? ""
+										: props.tasks[awaitingTask - 1].status}
 								</td>
 								<td onDoubleClick={(event) => editNote(event, task)}>
 									{task.note}

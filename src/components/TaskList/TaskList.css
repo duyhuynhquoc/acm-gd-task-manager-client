@@ -1,10 +1,13 @@
-.TaskList .availability {
-	font-weight: 700;
+.redText {
 	color: #ff4d4d !important;
 }
 
-.TaskList .availability.available {
+.greenText {
 	color: #009933 !important;
+}
+
+.TaskList .availability {
+	font-weight: 700;
 }
 
 .TaskList .delete-btn {
@@ -18,4 +21,33 @@
 
 .TaskList .delete-btn-icon {
 	font-size: 1.4rem;
+}
+
+.Exp {
+	background: #cc66ff;
+	border-radius: 5px;
+	padding: 0 5px;
+	color: #fff;
+}
+
+.Log {
+	background: #ff6600;
+	border-radius: 5px;
+	padding: 0 5px;
+	color: #fff;
+}
+
+.Com {
+	background: #0066cc;
+	border-radius: 5px;
+	padding: 0 5px;
+	color: #fff;
+}
+
+.TaskList td {
+	vertical-align: middle;
+}
+
+.TaskList .awaitingStatus {
+	font-weight: 700;
 }

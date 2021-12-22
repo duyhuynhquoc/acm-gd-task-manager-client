@@ -1,3 +1,17 @@
 .TaskFilter {
 	text-align: left;
 }
+
+#popover-basic .popover-btn {
+	display: inline-block !important;
+	margin: 0 5px;
+}
+
+#popover-basic .popover-btn:hover {
+	background: #3585fd;
+	border-color: #3585fd;
+}
+
+#popover-basic .popover-btn-group {
+	margin: 0 -5px;
+}

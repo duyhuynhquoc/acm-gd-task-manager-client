@@ -14,9 +14,10 @@ export default function TaskFilter() {
 	const popover = (
 		<Popover id="popover-basic">
 			<Popover.Body>
-				<div>
-					<p>Status</p>
+				<div className="pb-2">Status</div>
+				<div className="popover-btn-group">
 					<ToggleButton
+						className="popover-btn"
 						variant="outline-primary"
 						size="sm"
 						id="toggle-done"
@@ -31,7 +32,9 @@ export default function TaskFilter() {
 					>
 						Done
 					</ToggleButton>
+
 					<ToggleButton
+						className="popover-btn"
 						variant="outline-primary"
 						size="sm"
 						id="toggle-todo"
@@ -47,6 +50,7 @@ export default function TaskFilter() {
 						To-do
 					</ToggleButton>
 					<ToggleButton
+						className="popover-btn"
 						variant="outline-primary"
 						size="sm"
 						id="toggle-in-progress"
