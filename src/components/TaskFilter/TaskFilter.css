@@ -15,3 +15,7 @@
 #popover-basic .popover-btn-group {
 	margin: 0 -5px;
 }
+
+#popover-basic {
+	max-width: 100%;
+}

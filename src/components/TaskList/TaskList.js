@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { AiFillCloseCircle } from "react-icons/ai";
 import TaskFilter from "../TaskFilter/TaskFilter";
@@ -6,6 +6,57 @@ import TaskFilter from "../TaskFilter/TaskFilter";
 import "./TaskList.css";
 
 export default function TaskList(props) {
+	const [filters, setFilters] = useState({
+		status: {
+			done: true,
+			todo: true,
+			inProgress: true,
+		},
+		board: {
+			expertise: true,
+			logistics: true,
+			communication: true,
+			none: true,
+		},
+	});
+
+	const [tasks, setTasks] = useState(props.tasks);
+
+	useEffect(() => {
+		setTasks(props.tasks);
+	}, [props.tasks]);
+
+	useEffect(() => {
+		let newTasks = props.tasks.filter((task) => {
+			let validStatus = false;
+			if (
+				(task.status === "To-do" && filters.status.todo) ||
+				(task.status === "In progress" && filters.status.inProgress) ||
+				(task.status === "Done" && filters.status.done)
+			) {
+				validStatus = true;
+			}
+
+			let validBoard = false;
+			if (
+				(task.board === "Expertise" && filters.board.expertise) ||
+				(task.board === "Logistics" && filters.board.logistics) ||
+				(task.board === "Communication" && filters.board.communication) ||
+				(task.board === "" && filters.board.none)
+			) {
+				validBoard = true;
+			}
+
+			if (validStatus && validBoard) return task;
+		});
+
+		setTasks(newTasks);
+	}, [filters]);
+
+	const updateFilters = (newFilters) => {
+		setFilters(newFilters);
+	};
+
 	// Color rows depends on deadlines
 	const colorTaskListRow = (task) => {
 		let deadlineDate = new Date(task.deadline);
@@ -25,8 +76,8 @@ export default function TaskList(props) {
 	const awatingTask = (task) => {
 		let index = "";
 
-		if (props.tasks.awaiting !== "")
-			props.tasks.map((t, i) => {
+		if (tasks.awaiting !== "")
+			tasks.map((t, i) => {
 				if (t.taskId === task.awaiting) {
 					index = i;
 				}
@@ -35,11 +86,70 @@ export default function TaskList(props) {
 		return index === "" ? "" : index + 1;
 	};
 
+	const editBoard = (event, task) => {
+		// stopPropagation();
+		let taskCell = event.target;
+
+		if (taskCell.getAttribute("class") !== "cell") {
+			taskCell = taskCell.parentElement;
+		}
+
+		// Get board value
+		let board = task.board;
+
+		// Change text into input
+		taskCell.innerHTML = `<select id="edit-board">
+      <option value="Expertise">Expertise</option>
+      <option value="Logistics">Logistics</option>
+      <option value="Communication">Communication</option>
+      <option value="">None</option>
+    </select>`;
+
+		const submitBoard = (e) => {
+			e.preventDefault();
+			let newTasks = [...tasks];
+
+			let updateTasks = [];
+
+			props.updateTasks(updateTasks);
+
+			if (task.taskId == task.taskId) {
+				task.board = editStatusInput.value;
+				updateTasks.push({
+					updateId: task.taskId,
+					updateField: "board",
+					updateValue: editStatusInput.value,
+				});
+			}
+
+			props.updateTasks(updateTasks);
+
+			props.setTasks(newTasks);
+			board = editStatusInput.value.slice(0, 3);
+			taskCell.innerHTML = `<div class="${board}">${board}</div>`;
+		};
+
+		// Focus on input
+		const editStatusInput = document.querySelector("#edit-board");
+		editStatusInput.value = board;
+		editStatusInput.focus();
+
+		// Prevent double click on input
+		editStatusInput.addEventListener("dblclick", (e) => {
+			e.stopPropagation();
+		});
+
+		// Submit when move out of input
+		editStatusInput.addEventListener("focusout", submitBoard);
+
+		// No need to submit when press enter
+	};
+
 	const editStatus = (event, task) => {
 		const taskCell = event.target;
 
 		// Get status value
-		let status = taskCell.innerHTML;
+		let status = task.status;
 
 		// Change text into input
 		taskCell.innerHTML = `<select id="edit-status">
@@ -50,7 +160,7 @@ export default function TaskList(props) {
 
 		const submitStatus = (e) => {
 			e.preventDefault();
-			let newTasks = [...props.tasks];
+			let newTasks = [...tasks];
 
 			let updateTasks = [];
 
@@ -85,7 +195,7 @@ export default function TaskList(props) {
 				}
 				return t;
 			});
-			console.log(updateTasks);
+
 			props.updateTasks(updateTasks);
 
 			props.setTasks(newTasks);
@@ -112,7 +222,7 @@ export default function TaskList(props) {
 		const taskCell = event.target;
 
 		// Get taskName value
-		let taskName = taskCell.innerHTML;
+		let taskName = task.taskName;
 
 		// Change text into input
 		taskCell.innerHTML = `<form id="edit-task-name-form"><textarea id="edit-task-name" autocomplete="off"/></form>`;
@@ -157,7 +267,7 @@ export default function TaskList(props) {
 		const taskCell = event.target;
 
 		// Get deadline value
-		let deadline = taskCell.innerHTML;
+		let deadline = task.deadline;
 
 		// Change text into input
 		taskCell.innerHTML = `<form id="edit-deadline-form"><input type="date" id="edit-deadline-input" autocomplete="off"/></form>`;
@@ -210,7 +320,7 @@ export default function TaskList(props) {
 		const taskCell = event.target;
 
 		// Get assignee value
-		let assignee = taskCell.innerHTML;
+		let assignee = task.assignee;
 
 		// Change text into input
 		taskCell.innerHTML = `<form id="edit-assignee-form"><input type="text" id="edit-assignee-input" autocomplete="off"/></form>`;
@@ -256,7 +366,7 @@ export default function TaskList(props) {
 		const taskCell = event.target;
 
 		// Get assigner value
-		let assigner = taskCell.innerHTML;
+		let assigner = task.assigner;
 
 		// Change text into input
 		taskCell.innerHTML = `<form id="edit-assigner-form"><input type="text" id="edit-assigner-input" autocomplete="off"/></form>`;
@@ -301,7 +411,7 @@ export default function TaskList(props) {
 		const taskCell = event.target;
 
 		// Get awaiting value
-		let awaiting = taskCell.innerHTML;
+		let awaiting = task.awaiting;
 
 		// Change text into input
 		taskCell.innerHTML = `<form id="edit-awaiting-form"><input type="text" id="edit-awaiting-input" autocomplete="off" /></form>`;
@@ -310,7 +420,7 @@ export default function TaskList(props) {
 			e.preventDefault();
 
 			let availability = task.availability;
-			let awaiting = props.tasks[editAwaitingInput.value - 1];
+			let awaiting = tasks[editAwaitingInput.value - 1];
 
 			if (!awaiting) {
 				awaiting = "";
@@ -361,7 +471,7 @@ export default function TaskList(props) {
 		const taskCell = event.target;
 
 		// Get note value
-		let note = taskCell.innerHTML;
+		let note = task.note;
 
 		// Change text into input
 		taskCell.innerHTML = `<form id="edit-note-form"><textarea id="edit-note" autocomplete="off"/></form>`;
@@ -404,7 +514,7 @@ export default function TaskList(props) {
 
 	return (
 		<div className="TaskList">
-			<TaskFilter />
+			<TaskFilter updateFilters={updateFilters} />
 			<Table striped responsive hover>
 				<thead>
 					<tr>
@@ -425,16 +535,19 @@ export default function TaskList(props) {
 				</thead>
 
 				<tbody>
-					{props.tasks.map((task, index) => {
-						let classList = colorTaskListRow(task);
+					{tasks.map((task, index) => {
+						let rowClassList = colorTaskListRow(task);
 
 						let awaitingTask = awatingTask(task);
 						let board = task.board.slice(0, 3);
 
 						return (
-							<tr className={classList} key={index + 1}>
-								<td>
-									<div className={`${board}`}>{board}</div>
+							<tr className={rowClassList} key={index + 1}>
+								<td
+									className="cell"
+									onDoubleClick={(event) => editBoard(event, task)}
+								>
+									<div className={board}>{board}</div>
 								</td>
 								<td>{index + 1}</td>
 								<td onDoubleClick={(event) => editStatus(event, task)}>
@@ -473,14 +586,12 @@ export default function TaskList(props) {
 									className={`awaitingStatus${
 										awaitingTask === ""
 											? ""
-											: props.tasks[awaitingTask - 1].status === "Done"
+											: tasks[awaitingTask - 1].status === "Done"
 											? " greenText"
 											: " redText"
 									}`}
 								>
-									{awaitingTask === ""
-										? ""
-										: props.tasks[awaitingTask - 1].status}
+									{awaitingTask === "" ? "" : tasks[awaitingTask - 1].status}
 								</td>
 								<td onDoubleClick={(event) => editNote(event, task)}>
 									{task.note}

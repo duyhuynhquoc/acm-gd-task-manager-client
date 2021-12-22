@@ -4,67 +4,222 @@ import { IoMdArrowDropdown } from "react-icons/io";
 
 import "./TaskFilter.css";
 
-export default function TaskFilter() {
-	const [statusFilter, setStatusFilter] = useState({
-		done: true,
-		todo: true,
-		inProgress: true,
+export default function TaskFilter(props) {
+	const [filters, setFilters] = useState({
+		status: {
+			done: true,
+			todo: true,
+			inProgress: true,
+		},
+		board: {
+			expertise: true,
+			logistics: true,
+			communication: true,
+			none: true,
+		},
 	});
 
 	const popover = (
 		<Popover id="popover-basic">
 			<Popover.Body>
-				<div className="pb-2">Status</div>
-				<div className="popover-btn-group">
-					<ToggleButton
-						className="popover-btn"
-						variant="outline-primary"
-						size="sm"
-						id="toggle-done"
-						type="checkbox"
-						checked={statusFilter.done}
-						onChange={(e) =>
-							setStatusFilter({
-								...statusFilter,
-								done: e.currentTarget.checked,
-							})
-						}
-					>
-						Done
-					</ToggleButton>
+				<div>
+					<div className="pb-2">Status</div>
+					<div className="popover-btn-group pb-3">
+						<ToggleButton
+							className="popover-btn"
+							variant="outline-primary"
+							size="sm"
+							id="toggle-done"
+							type="checkbox"
+							checked={filters.status.done}
+							onChange={(e) => {
+								{
+									setFilters({
+										...filters,
+										status: {
+											...filters.status,
+											done: e.currentTarget.checked,
+										},
+									});
+								}
+								props.updateFilters({
+									...filters,
+									status: {
+										...filters.status,
+										done: e.currentTarget.checked,
+									},
+								});
+							}}
+						>
+							Done
+						</ToggleButton>
 
-					<ToggleButton
-						className="popover-btn"
-						variant="outline-primary"
-						size="sm"
-						id="toggle-todo"
-						type="checkbox"
-						checked={statusFilter.todo}
-						onChange={(e) =>
-							setStatusFilter({
-								...statusFilter,
-								todo: e.currentTarget.checked,
-							})
-						}
-					>
-						To-do
-					</ToggleButton>
-					<ToggleButton
-						className="popover-btn"
-						variant="outline-primary"
-						size="sm"
-						id="toggle-in-progress"
-						type="checkbox"
-						checked={statusFilter.inProgress}
-						onChange={(e) =>
-							setStatusFilter({
-								...statusFilter,
-								inProgress: e.currentTarget.checked,
-							})
-						}
-					>
-						In progress
-					</ToggleButton>
+						<ToggleButton
+							className="popover-btn"
+							variant="outline-primary"
+							size="sm"
+							id="toggle-todo"
+							type="checkbox"
+							checked={filters.status.todo}
+							onChange={(e) => {
+								setFilters({
+									...filters,
+									status: {
+										...filters.status,
+										todo: e.currentTarget.checked,
+									},
+								});
+								props.updateFilters({
+									...filters,
+									status: {
+										...filters.status,
+										todo: e.currentTarget.checked,
+									},
+								});
+							}}
+						>
+							To-do
+						</ToggleButton>
+						<ToggleButton
+							className="popover-btn"
+							variant="outline-primary"
+							size="sm"
+							id="toggle-in-progress"
+							type="checkbox"
+							checked={filters.status.inProgress}
+							onChange={(e) => {
+								setFilters({
+									...filters,
+									status: {
+										...filters.status,
+										inProgress: e.currentTarget.checked,
+									},
+								});
+								props.updateFilters({
+									...filters,
+									status: {
+										...filters.status,
+										inProgress: e.currentTarget.checked,
+									},
+								});
+							}}
+						>
+							In progress
+						</ToggleButton>
+					</div>
+
+					<div className="pb-2">Board</div>
+					<div className="popover-btn-group">
+						<ToggleButton
+							className="popover-btn"
+							variant="outline-primary"
+							size="sm"
+							id="toggle-expertise"
+							type="checkbox"
+							checked={filters.board.expertise}
+							onChange={(e) => {
+								{
+									setFilters({
+										...filters,
+										board: {
+											...filters.board,
+											expertise: e.currentTarget.checked,
+										},
+									});
+								}
+								props.updateFilters({
+									...filters,
+									board: {
+										...filters.board,
+										expertise: e.currentTarget.checked,
+									},
+								});
+							}}
+						>
+							Expertise
+						</ToggleButton>
+
+						<ToggleButton
+							className="popover-btn"
+							variant="outline-primary"
+							size="sm"
+							id="toggle-logistics"
+							type="checkbox"
+							checked={filters.board.logistics}
+							onChange={(e) => {
+								setFilters({
+									...filters,
+									board: {
+										...filters.board,
+										logistics: e.currentTarget.checked,
+									},
+								});
+								props.updateFilters({
+									...filters,
+									board: {
+										...filters.board,
+										logistics: e.currentTarget.checked,
+									},
+								});
+							}}
+						>
+							Logistics
+						</ToggleButton>
+						<ToggleButton
+							className="popover-btn"
+							variant="outline-primary"
+							size="sm"
+							id="toggle-communication"
+							type="checkbox"
+							checked={filters.board.communication}
+							onChange={(e) => {
+								setFilters({
+									...filters,
+									board: {
+										...filters.board,
+										communication: e.currentTarget.checked,
+									},
+								});
+								props.updateFilters({
+									...filters,
+									board: {
+										...filters.board,
+										communication: e.currentTarget.checked,
+									},
+								});
+							}}
+						>
+							Communication
+						</ToggleButton>
+						<ToggleButton
+							className="popover-btn"
+							variant="outline-primary"
+							size="sm"
+							id="toggle-none"
+							type="checkbox"
+							checked={filters.board.none}
+							onChange={(e) => {
+								{
+									setFilters({
+										...filters,
+										board: {
+											...filters.board,
+											none: e.currentTarget.checked,
+										},
+									});
+								}
+								props.updateFilters({
+									...filters,
+									board: {
+										...filters.board,
+										none: e.currentTarget.checked,
+									},
+								});
+							}}
+						>
+							None
+						</ToggleButton>
+					</div>
 				</div>
 			</Popover.Body>
 		</Popover>
@@ -74,7 +229,7 @@ export default function TaskFilter() {
 		<div className="TaskFilter pb-4 col-md-1">
 			<OverlayTrigger trigger="click" placement="right" overlay={popover}>
 				<Button variant="light" size="sm">
-					Filter <IoMdArrowDropdown />
+					Filters <IoMdArrowDropdown />
 				</Button>
 			</OverlayTrigger>
 		</div>

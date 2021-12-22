@@ -28,6 +28,7 @@
 	border-radius: 5px;
 	padding: 0 5px;
 	color: #fff;
+	font-size: 0.8rem;
 }
 
 .Log {
@@ -35,6 +36,7 @@
 	border-radius: 5px;
 	padding: 0 5px;
 	color: #fff;
+	font-size: 0.8rem;
 }
 
 .Com {
@@ -42,6 +44,7 @@
 	border-radius: 5px;
 	padding: 0 5px;
 	color: #fff;
+	font-size: 0.8rem;
 }
 
 .TaskList td {
