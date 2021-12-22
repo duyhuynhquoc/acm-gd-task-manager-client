@@ -327,7 +327,6 @@ export default function TaskList(props) {
 
 		const submitAssignee = (e) => {
 			e.preventDefault();
-			let newTask = { ...task, assignee: editAssigneeInput.value };
 
 			let updateTasks = [
 				{
