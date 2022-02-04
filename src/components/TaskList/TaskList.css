@@ -6,20 +6,61 @@
 	color: #009933 !important;
 }
 
+.hide {
+	display: none;
+}
+
+.green-background {
+	background: #0daa41;
+	border-radius: 4px;
+	color: #fff;
+}
+
+.red-background {
+	background: #ff5e5e;
+	border-radius: 4px;
+	color: #fff;
+}
+
 .TaskList .availability {
 	font-weight: 700;
 }
 
-.TaskList .delete-btn {
+.TaskList .delete-btn-icon {
 	color: #ff4d4d;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	padding-left: 10%;
+	font-size: 1.4rem;
 }
 
-.TaskList .delete-btn-icon {
+.TaskList .awaiting-task {
+	display: flex;
+	margin: 2px 0;
+}
+
+.TaskList .awaiting-task .content {
+	flex: 8;
+}
+
+.TaskList .awaiting-task .delete-btn-icon {
+	flex: 2;
+	padding-left: 5px;
+}
+
+.TaskList .add-awaiting-task {
+}
+
+.TaskList .add-awaiting-task-input {
+	width: 72%;
+}
+
+.TaskList .add-awaiting-task-btn-icon {
+	color: #0066cc;
+	cursor: pointer;
+	padding-left: 5px;
 	font-size: 1.4rem;
 }
 

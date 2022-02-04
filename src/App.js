@@ -27,28 +27,7 @@ export default function App() {
 		// Delete task by taskId
 		let newTasks = tasks.filter((task) => task.taskId !== deleteId);
 
-		let updateAvailabilityTask = [];
-
-		// Update tasks' availability
-		newTasks.map((task) => {
-			if (task.awaiting === deleteId) {
-				task.availability = "Available";
-
-				updateAvailabilityTask.push({
-					updateId: task.taskId,
-					updateField: "availability",
-					updateValue: "Available",
-				});
-			}
-
-			return task;
-		});
-
 		setTasks(newTasks);
-
-		axios
-			.put(`${url}/api/`, { updateTasks: updateAvailabilityTask })
-			.then((res) => {});
 
 		// Delete task on database
 		axios.delete(`${url}/api/`, { data: { deleteId } }).then((res) => {});
@@ -71,6 +50,44 @@ export default function App() {
 		axios.put(`${url}/api/`, { updateTasks }).then((res) => {});
 	};
 
+	const createAwaitingTask = (superiorTaskId, subordinateTaskId) => {
+		let newTasks = tasks.map((task) => {
+			if (task.taskId === superiorTaskId) {
+				task.awaiting.push(subordinateTaskId);
+			}
+
+			return task;
+		});
+
+		setTasks(newTasks);
+
+		axios
+			.post(`${url}/api/awaiting`, { superiorTaskId, subordinateTaskId })
+			.then((res) => {});
+	};
+
+	const deleteAwaitingTask = (superiorTaskId, subordinateTaskId) => {
+		let newTasks = tasks.map((task) => {
+			if (task.taskId === superiorTaskId) {
+				let newTaskAwaiting = task.awaiting.filter((a) => {
+					if (a !== subordinateTaskId) return a;
+				});
+
+				task.awaiting = newTaskAwaiting;
+			}
+
+			return task;
+		});
+
+		setTasks(newTasks);
+
+		axios
+			.delete(`${url}/api/awaiting`, {
+				data: { superiorTaskId, subordinateTaskId },
+			})
+			.then((res) => {});
+	};
+
 	return (
 		<div className="App">
 			<NavBar />
@@ -81,6 +98,8 @@ export default function App() {
 					deleteTask={deleteTask}
 					updateTasks={updateTasks}
 					setTasks={setTasks}
+					createAwaitingTask={createAwaitingTask}
+					deleteAwaitingTask={deleteAwaitingTask}
 				/>
 			</div>
 		</div>

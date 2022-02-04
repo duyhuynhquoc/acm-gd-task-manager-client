@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { AiFillCloseCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import TaskFilter from "../TaskFilter/TaskFilter";
 
 import "./TaskList.css";
@@ -73,17 +73,30 @@ export default function TaskList(props) {
 		}
 	};
 
-	const awatingTask = (task) => {
-		let index = "";
+	const findAwatingTaskOrders = (task) => {
+		let indexList = [];
+		let awaitingTasks = task.awaiting;
 
-		if (tasks.awaiting !== "")
-			tasks.map((t, i) => {
-				if (t.taskId === task.awaiting) {
+		awaitingTasks.forEach((awatingTaskId) => {
+			let index = -1;
+			props.tasks.map((t, i) => {
+				if (t.taskId === awatingTaskId) {
 					index = i;
 				}
-				return task;
 			});
-		return index === "" ? "" : index + 1;
+
+			indexList.push(index);
+		});
+
+		return indexList;
+	};
+
+	const checkAvailability = (awaitingTaskOrders) => {
+		let availability = "Available";
+		awaitingTaskOrders.map((a) => {
+			if (props.tasks[a].status !== "Done") availability = "Unvailable";
+		});
+		return availability;
 	};
 
 	const editBoard = (event, task) => {
@@ -225,7 +238,7 @@ export default function TaskList(props) {
 		let taskName = task.taskName;
 
 		// Change text into input
-		taskCell.innerHTML = `<form id="edit-task-name-form"><textarea id="edit-task-name" autocomplete="off"/></form>`;
+		taskCell.innerHTML = `<form id="edit-task-name-form"><textarea id="edit-task-name" style="width: 100%" autocomplete="off"/></form>`;
 
 		const submitTaskName = (e) => {
 			e.preventDefault();
@@ -270,7 +283,7 @@ export default function TaskList(props) {
 		let deadline = task.deadline;
 
 		// Change text into input
-		taskCell.innerHTML = `<form id="edit-deadline-form"><input type="date" id="edit-deadline-input" autocomplete="off"/></form>`;
+		taskCell.innerHTML = `<form id="edit-deadline-form"><input type="date" style="width: 100%" id="edit-deadline-input" autocomplete="off"/></form>`;
 
 		const submitDeadline = (e) => {
 			e.preventDefault();
@@ -323,7 +336,7 @@ export default function TaskList(props) {
 		let assignee = task.assignee;
 
 		// Change text into input
-		taskCell.innerHTML = `<form id="edit-assignee-form"><input type="text" id="edit-assignee-input" autocomplete="off"/></form>`;
+		taskCell.innerHTML = `<form id="edit-assignee-form"><input type="text" style="width: 100%" id="edit-assignee-input" autocomplete="off"/></form>`;
 
 		const submitAssignee = (e) => {
 			e.preventDefault();
@@ -368,7 +381,7 @@ export default function TaskList(props) {
 		let assigner = task.assigner;
 
 		// Change text into input
-		taskCell.innerHTML = `<form id="edit-assigner-form"><input type="text" id="edit-assigner-input" autocomplete="off"/></form>`;
+		taskCell.innerHTML = `<form id="edit-assigner-form"><input type="text" style="width: 100%" id="edit-assigner-input" autocomplete="off"/></form>`;
 
 		const submitAssigner = (e) => {
 			e.preventDefault();
@@ -406,67 +419,6 @@ export default function TaskList(props) {
 		editAssignerForm.addEventListener("submit", submitAssigner);
 	};
 
-	const editAwaiting = (event, task) => {
-		const taskCell = event.target;
-
-		// Get awaiting value
-		let awaiting = taskCell.textContent;
-
-		// Change text into input
-		taskCell.innerHTML = `<form id="edit-awaiting-form"><input type="text" id="edit-awaiting-input" autocomplete="off" /></form>`;
-
-		const submitAwaiting = (e) => {
-			e.preventDefault();
-
-			let availability = task.availability;
-			let awaiting = tasks[editAwaitingInput.value - 1];
-			console.log(awaiting);
-
-			if (!awaiting) {
-				awaiting = "";
-				availability = "Available";
-			} else {
-				availability = awaiting.status === "Done" ? "Available" : "Unavailable";
-			}
-
-			let updateTasks = [
-				{
-					updateId: task.taskId,
-					updateField: "awaiting",
-					updateValue: awaiting.taskId,
-				},
-				{
-					updateId: task.taskId,
-					updateField: "availability",
-					updateValue: availability,
-				},
-			];
-
-			props.updateTasks(updateTasks);
-
-			editAwaitingInput.removeEventListener("focusout", submitAwaiting);
-
-			taskCell.innerHTML = !awaiting ? "" : editAwaitingInput.value;
-		};
-
-		// Focus on input
-		const editAwaitingInput = document.querySelector("#edit-awaiting-input");
-		editAwaitingInput.value = awaiting;
-		editAwaitingInput.focus();
-
-		// Prevent double click on input
-		editAwaitingInput.addEventListener("dblclick", (e) => {
-			e.stopPropagation();
-		});
-
-		// Submit when move out of input
-		editAwaitingInput.addEventListener("focusout", submitAwaiting);
-
-		// Submit form when press enter
-		const editAwaitingForm = document.querySelector("#edit-awaiting-form");
-		editAwaitingForm.addEventListener("submit", submitAwaiting);
-	};
-
 	const editNote = (event, task) => {
 		const taskCell = event.target;
 
@@ -474,7 +426,7 @@ export default function TaskList(props) {
 		let note = task.note;
 
 		// Change text into input
-		taskCell.innerHTML = `<form id="edit-note-form"><textarea id="edit-note" autocomplete="off"/></form>`;
+		taskCell.innerHTML = `<form id="edit-note-form"><textarea id="edit-note" style="width: 100%" autocomplete="off"/></form>`;
 
 		const submitNote = (e) => {
 			e.preventDefault();
@@ -512,6 +464,45 @@ export default function TaskList(props) {
 		editNoteForm.addEventListener("submit", submitNote);
 	};
 
+	const addAwaitingTask = (event, task) => {
+		let addAwaitingTaskBtn = event.currentTarget;
+		let addAwaitingTaskForm = addAwaitingTaskBtn.parentElement;
+		let addAwaitingTaskInput = addAwaitingTaskForm.querySelector(
+			".add-awaiting-task-input"
+		);
+
+		addAwaitingTaskInput.classList.remove("hide");
+		addAwaitingTaskInput.focus();
+
+		const submitAwaitingTask = (e) => {
+			e.preventDefault();
+
+			// [Todo]: Add awaiting task
+
+			let awaitingTask = tasks.length - addAwaitingTaskInput.value;
+
+			if (awaitingTask >= 0 && awaitingTask < tasks.length) {
+				let superiorTaskId = task.taskId;
+				let subordinateTaskId = tasks[awaitingTask].taskId;
+
+				props.createAwaitingTask(superiorTaskId, subordinateTaskId);
+			}
+
+			addAwaitingTaskInput.value = "";
+			addAwaitingTaskForm.removeEventListener("submit", submitAwaitingTask);
+			addAwaitingTaskBtn.removeEventListener("click", submitAwaitingTask);
+
+			addAwaitingTaskInput.classList.add("hide");
+		};
+
+		addAwaitingTaskInput.addEventListener("focusout", () => {
+			addAwaitingTaskInput.classList.add("hide");
+		});
+
+		addAwaitingTaskForm.addEventListener("submit", submitAwaitingTask);
+		addAwaitingTaskBtn.addEventListener("click", submitAwaitingTask);
+	};
+
 	return (
 		<div className="TaskList">
 			<TaskFilter updateFilters={updateFilters} />
@@ -520,15 +511,13 @@ export default function TaskList(props) {
 					<tr>
 						<th></th>
 						<th>Id</th>
-						<th className="col-sm-1">Status</th>
-						<th className="">Availability</th>
+						<th>Status</th>
+						<th>Availability</th>
 						<th className="col-sm-3">Task</th>
 						<th className="col-sm-1">Deadline</th>
 						<th className="col-sm-1">Assignee</th>
 						<th className="col-sm-1">Assigner</th>
-						<th className="col-sm-1" colSpan="2">
-							Awaiting
-						</th>
+						<th className="col-sm-1">Awaiting</th>
 						<th className="col-sm-3">Note</th>
 						<th></th>
 					</tr>
@@ -538,8 +527,11 @@ export default function TaskList(props) {
 					{tasks.map((task, index) => {
 						let rowClassList = colorTaskListRow(task);
 
-						let awaitingTask = awatingTask(task);
 						let board = task.board.slice(0, 3);
+
+						let awaitingTaskOrders = findAwatingTaskOrders(task);
+
+						let availability = checkAvailability(awaitingTaskOrders);
 
 						return (
 							<tr className={rowClassList} key={index + 1}>
@@ -549,18 +541,16 @@ export default function TaskList(props) {
 								>
 									<div className={board}>{board}</div>
 								</td>
-								<td>{index + 1}</td>
+								<td>{tasks.length - index}</td>
 								<td onDoubleClick={(event) => editStatus(event, task)}>
 									{task.status}
 								</td>
 								<td
 									className={`availability${
-										task.availability === "Available"
-											? " greenText"
-											: " redText"
+										availability === "Available" ? " greenText" : " redText"
 									}`}
 								>
-									{task.availability}
+									{availability}
 								</td>
 								<td onDoubleClick={(event) => editTaskName(event, task)}>
 									{task.taskName}
@@ -579,32 +569,64 @@ export default function TaskList(props) {
 								<td onDoubleClick={(event) => editAssigner(event, task)}>
 									{task.assigner}
 								</td>
-								<td onDoubleClick={(event) => editAwaiting(event, task)}>
-									{awaitingTask}
+
+								<td>
+									{awaitingTaskOrders.map((awaitingTask, i) => {
+										return (
+											<div className="awaiting-task" key={i}>
+												<div
+													className={`content ${
+														props.tasks[awaitingTask].status === "Done"
+															? "green"
+															: "red"
+													}-background`}
+												>
+													{tasks.length - awaitingTask}
+												</div>
+												<AiFillCloseCircle
+													className="delete-btn-icon"
+													onClick={() => {
+														props.deleteAwaitingTask(
+															task.taskId,
+															tasks[awaitingTask].taskId
+														);
+													}}
+												/>
+											</div>
+										);
+									})}
+									<div className="add-awaiting-task">
+										<form>
+											<input
+												className="add-awaiting-task-input hide"
+												type="text"
+											/>
+											<AiOutlinePlusCircle
+												className="add-awaiting-task-btn-icon"
+												onClick={(event) => addAwaitingTask(event, task)}
+											/>
+										</form>
+									</div>
 								</td>
+
 								<td
-									className={`awaitingStatus${
-										awaitingTask === ""
-											? ""
-											: tasks[awaitingTask - 1].status === "Done"
-											? " greenText"
-											: " redText"
-									}`}
+									onDoubleClick={(event) => editNote(event, task)}
+									style={{
+										whiteSpace: "pre-wrap",
+										textAlign: "left",
+										paddingLeft: "20px",
+										paddingRight: "20px",
+									}}
 								>
-									{awaitingTask === "" ? "" : tasks[awaitingTask - 1].status}
-								</td>
-								<td onDoubleClick={(event) => editNote(event, task)}>
 									{task.note}
 								</td>
 								<td>
-									<div className="delete-btn">
-										<AiFillCloseCircle
-											className="delete-btn-icon"
-											onClick={() => {
-												props.deleteTask(task.taskId);
-											}}
-										/>
-									</div>
+									<AiFillCloseCircle
+										className="delete-btn-icon"
+										onClick={() => {
+											props.deleteTask(task.taskId);
+										}}
+									/>
 								</td>
 							</tr>
 						);

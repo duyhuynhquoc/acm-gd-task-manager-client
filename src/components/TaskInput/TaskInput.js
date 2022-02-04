@@ -50,26 +50,24 @@ export default function TaskInput(props) {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		let availability = "Available";
-		let awaiting = props.tasks[task.awaiting - 1];
+		let awaitingOrd = task.awaiting.split(",");
 
-		if (!awaiting) {
-			awaiting = "";
-			availability = task.awaiting === "" ? "Available" : "Unavailable";
-		} else {
-			availability = awaiting.status === "Done" ? "Available" : "Unavailable";
-		}
+		let awaiting = [];
+		awaitingOrd.forEach((a) => {
+			let i = props.tasks.length - a.trim();
+			if (!isNaN(i) && i >= 0 && i < props.tasks.length)
+				awaiting.push(props.tasks[i].taskId);
+		});
 
 		let newTask = {
 			taskId: uuidv4(),
 			status: "To-do",
-			availability: availability,
 			taskName: task.taskName,
 			deadline: task.deadline,
 			board: task.board,
 			assignee: task.assignee,
 			assigner: task.assigner,
-			awaiting: awaiting ? awaiting.taskId : "",
+			awaiting: awaiting,
 			note: task.note,
 		};
 
@@ -83,6 +81,7 @@ export default function TaskInput(props) {
 			assigner: "",
 			awaiting: "",
 			note: "",
+			awaiting: [],
 		});
 	};
 
@@ -166,7 +165,7 @@ export default function TaskInput(props) {
 						<FaCheckSquare className="fa-icon me-2" />
 						<FormControl
 							type="text"
-							placeholder="Awaiting"
+							placeholder="Awaiting (1, 2, 3, ...)"
 							onChange={(event) => {
 								handleChange(event, "awaiting");
 							}}
