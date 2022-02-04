@@ -25,7 +25,13 @@ export default function App() {
 
 	const deleteTask = (deleteId) => {
 		// Delete task by taskId
-		let newTasks = tasks.filter((task) => task.taskId !== deleteId);
+		let newTasks = tasks.filter((task) => {
+			if (task.taskId !== deleteId) {
+				// Delete awaiting tasks
+				task.awaiting = task.awaiting.filter((a) => a !== deleteId);
+				return task;
+			}
+		});
 
 		setTasks(newTasks);
 
