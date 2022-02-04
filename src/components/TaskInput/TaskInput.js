@@ -125,7 +125,7 @@ export default function TaskInput(props) {
 								>
 									<option>Board</option>
 									<option value="Expertise">Expertise</option>
-									<option value="Logistics">Logistics</option>
+									<option value="Programme">Programme</option>
 									<option value="Communication">Communication</option>
 								</Form.Select>
 							</Form.Group>

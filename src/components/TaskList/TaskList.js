@@ -14,7 +14,7 @@ export default function TaskList(props) {
 		},
 		board: {
 			expertise: true,
-			logistics: true,
+			programme: true,
 			communication: true,
 			none: true,
 		},
@@ -40,7 +40,7 @@ export default function TaskList(props) {
 			let validBoard = false;
 			if (
 				(task.board === "Expertise" && filters.board.expertise) ||
-				(task.board === "Logistics" && filters.board.logistics) ||
+				(task.board === "Programme" && filters.board.programme) ||
 				(task.board === "Communication" && filters.board.communication) ||
 				(task.board === "" && filters.board.none)
 			) {
@@ -113,7 +113,7 @@ export default function TaskList(props) {
 		// Change text into input
 		taskCell.innerHTML = `<select id="edit-board">
       <option value="Expertise">Expertise</option>
-      <option value="Logistics">Logistics</option>
+      <option value="Programme">Programme</option>
       <option value="Communication">Communication</option>
       <option value="">None</option>
     </select>`;

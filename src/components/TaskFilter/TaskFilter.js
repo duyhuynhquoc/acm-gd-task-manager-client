@@ -13,7 +13,7 @@ export default function TaskFilter(props) {
 		},
 		board: {
 			expertise: true,
-			logistics: true,
+			programme: true,
 			communication: true,
 			none: true,
 		},
@@ -143,27 +143,27 @@ export default function TaskFilter(props) {
 							className="popover-btn"
 							variant="outline-primary"
 							size="sm"
-							id="toggle-logistics"
+							id="toggle-programme"
 							type="checkbox"
-							checked={filters.board.logistics}
+							checked={filters.board.programme}
 							onChange={(e) => {
 								setFilters({
 									...filters,
 									board: {
 										...filters.board,
-										logistics: e.currentTarget.checked,
+										programme: e.currentTarget.checked,
 									},
 								});
 								props.updateFilters({
 									...filters,
 									board: {
 										...filters.board,
-										logistics: e.currentTarget.checked,
+										programme: e.currentTarget.checked,
 									},
 								});
 							}}
 						>
-							Logistics
+							Programme
 						</ToggleButton>
 						<ToggleButton
 							className="popover-btn"
