@@ -81,7 +81,7 @@ export default function TaskInput(props) {
 			assigner: "",
 			awaiting: "",
 			note: "",
-			awaiting: [],
+			awaiting: "",
 		});
 	};
 
