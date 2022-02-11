@@ -558,9 +558,9 @@ export default function TaskList(props) {
 								<td onDoubleClick={(event) => editDeadline(event, task)}>
 									{task.deadline === ""
 										? ""
-										: `${task.deadline.slice(5, 7)}/${task.deadline.slice(
-												8,
-												10
+										: `${task.deadline.slice(8, 10)}/${task.deadline.slice(
+												5,
+												7
 										  )}/${task.deadline.slice(0, 4)}`}
 								</td>
 								<td onDoubleClick={(event) => editAssignee(event, task)}>
