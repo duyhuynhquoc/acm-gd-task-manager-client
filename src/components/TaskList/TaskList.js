@@ -8,14 +8,15 @@ import "./TaskList.css";
 export default function TaskList(props) {
 	const [filters, setFilters] = useState({
 		status: {
-			done: true,
 			todo: true,
 			inProgress: true,
+			reviewing: true,
+			done: true,
 		},
 		board: {
 			expertise: true,
 			programme: true,
-			communication: true,
+			communications: true,
 			none: true,
 		},
 	});
@@ -32,6 +33,7 @@ export default function TaskList(props) {
 			if (
 				(task.status === "To-do" && filters.status.todo) ||
 				(task.status === "In progress" && filters.status.inProgress) ||
+				(task.status === "Reviewing" && filters.status.reviewing) ||
 				(task.status === "Done" && filters.status.done)
 			) {
 				validStatus = true;
@@ -41,7 +43,7 @@ export default function TaskList(props) {
 			if (
 				(task.board === "Expertise" && filters.board.expertise) ||
 				(task.board === "Programme" && filters.board.programme) ||
-				(task.board === "Communication" && filters.board.communication) ||
+				(task.board === "Communications" && filters.board.communications) ||
 				(task.board === "" && filters.board.none)
 			) {
 				validBoard = true;
@@ -114,7 +116,7 @@ export default function TaskList(props) {
 		taskCell.innerHTML = `<select id="edit-board">
       <option value="Expertise">Expertise</option>
       <option value="Programme">Programme</option>
-      <option value="Communication">Communication</option>
+      <option value="Communications">Communications</option>
       <option value="">None</option>
     </select>`;
 
@@ -168,6 +170,7 @@ export default function TaskList(props) {
 		taskCell.innerHTML = `<select id="edit-status">
       <option value="To-do">To-do</option>
       <option value="In progress">In progess</option>
+      <option value="Reviewing">Reviewing</option>
       <option value="Done">Done</option>
     </select>`;
 

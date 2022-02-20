@@ -7,9 +7,10 @@ import "./TaskFilter.css";
 export default function TaskFilter(props) {
 	const [filters, setFilters] = useState({
 		status: {
-			done: true,
 			todo: true,
 			inProgress: true,
+			reviewing: true,
+			done: true,
 		},
 		board: {
 			expertise: true,
@@ -25,6 +26,89 @@ export default function TaskFilter(props) {
 				<div>
 					<div className="pb-2">Status</div>
 					<div className="popover-btn-group pb-3">
+						<ToggleButton
+							className="popover-btn"
+							variant="outline-primary"
+							size="sm"
+							id="toggle-todo"
+							type="checkbox"
+							checked={filters.status.todo}
+							onChange={(e) => {
+								setFilters({
+									...filters,
+									status: {
+										...filters.status,
+										todo: e.currentTarget.checked,
+									},
+								});
+								props.updateFilters({
+									...filters,
+									status: {
+										...filters.status,
+										todo: e.currentTarget.checked,
+									},
+								});
+							}}
+						>
+							To-do
+						</ToggleButton>
+
+						<ToggleButton
+							className="popover-btn"
+							variant="outline-primary"
+							size="sm"
+							id="toggle-in-progress"
+							type="checkbox"
+							checked={filters.status.inProgress}
+							onChange={(e) => {
+								setFilters({
+									...filters,
+									status: {
+										...filters.status,
+										inProgress: e.currentTarget.checked,
+									},
+								});
+								props.updateFilters({
+									...filters,
+									status: {
+										...filters.status,
+										inProgress: e.currentTarget.checked,
+									},
+								});
+							}}
+						>
+							In progress
+						</ToggleButton>
+
+						<ToggleButton
+							className="popover-btn"
+							variant="outline-primary"
+							size="sm"
+							id="toggle-reviewing"
+							type="checkbox"
+							checked={filters.status.reviewing}
+							onChange={(e) => {
+								{
+									setFilters({
+										...filters,
+										status: {
+											...filters.status,
+											reviewing: e.currentTarget.checked,
+										},
+									});
+								}
+								props.updateFilters({
+									...filters,
+									status: {
+										...filters.status,
+										reviewing: e.currentTarget.checked,
+									},
+								});
+							}}
+						>
+							Reviewing
+						</ToggleButton>
+
 						<ToggleButton
 							className="popover-btn"
 							variant="outline-primary"
@@ -52,59 +136,6 @@ export default function TaskFilter(props) {
 							}}
 						>
 							Done
-						</ToggleButton>
-
-						<ToggleButton
-							className="popover-btn"
-							variant="outline-primary"
-							size="sm"
-							id="toggle-todo"
-							type="checkbox"
-							checked={filters.status.todo}
-							onChange={(e) => {
-								setFilters({
-									...filters,
-									status: {
-										...filters.status,
-										todo: e.currentTarget.checked,
-									},
-								});
-								props.updateFilters({
-									...filters,
-									status: {
-										...filters.status,
-										todo: e.currentTarget.checked,
-									},
-								});
-							}}
-						>
-							To-do
-						</ToggleButton>
-						<ToggleButton
-							className="popover-btn"
-							variant="outline-primary"
-							size="sm"
-							id="toggle-in-progress"
-							type="checkbox"
-							checked={filters.status.inProgress}
-							onChange={(e) => {
-								setFilters({
-									...filters,
-									status: {
-										...filters.status,
-										inProgress: e.currentTarget.checked,
-									},
-								});
-								props.updateFilters({
-									...filters,
-									status: {
-										...filters.status,
-										inProgress: e.currentTarget.checked,
-									},
-								});
-							}}
-						>
-							In progress
 						</ToggleButton>
 					</div>
 
