@@ -3,17 +3,22 @@ import axios from "axios";
 import url from "./serverUrl";
 
 import "./App.css";
+
+import { Spinner } from "react-bootstrap";
+
 import NavBar from "./components/Navbar/Navbar";
 import TaskList from "./components/TaskList/TaskList";
 import TaskInput from "./components/TaskInput/TaskInput";
 
 export default function App() {
 	const [tasks, setTasks] = useState([]);
+	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		axios.get(`${url}/api/`).then((res) => {
+	useEffect(async () => {
+		await axios.get(`${url}/api/`).then((res) => {
 			setTasks(res.data);
 		});
+		setLoading(false);
 	}, []);
 
 	const createTask = (newTask) => {
@@ -99,14 +104,18 @@ export default function App() {
 			<NavBar />
 			<div className="container-md py-4">
 				<TaskInput createTask={createTask} tasks={tasks} />
-				<TaskList
-					tasks={tasks}
-					deleteTask={deleteTask}
-					updateTasks={updateTasks}
-					setTasks={setTasks}
-					createAwaitingTask={createAwaitingTask}
-					deleteAwaitingTask={deleteAwaitingTask}
-				/>
+				{loading ? (
+					<Spinner animation="border" variant="primary" />
+				) : (
+					<TaskList
+						tasks={tasks}
+						deleteTask={deleteTask}
+						updateTasks={updateTasks}
+						setTasks={setTasks}
+						createAwaitingTask={createAwaitingTask}
+						deleteAwaitingTask={deleteAwaitingTask}
+					/>
+				)}
 			</div>
 		</div>
 	);
