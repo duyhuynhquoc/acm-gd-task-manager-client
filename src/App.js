@@ -102,7 +102,7 @@ export default function App() {
 	return (
 		<div className="App">
 			<NavBar />
-			<div className="container-md py-4">
+			<div className="container-fluid py-4">
 				<TaskInput createTask={createTask} tasks={tasks} />
 				{loading ? (
 					<Spinner animation="border" variant="primary" />

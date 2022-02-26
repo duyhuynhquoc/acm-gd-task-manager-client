@@ -516,12 +516,12 @@ export default function TaskList(props) {
 						<th>Id</th>
 						<th>Status</th>
 						<th>Availability</th>
-						<th className="col-sm-3">Task</th>
-						<th className="col-sm-1">Deadline</th>
-						<th className="col-sm-1">Assignee</th>
-						<th className="col-sm-1">Assigner</th>
-						<th className="col-sm-1">Awaiting</th>
-						<th className="col-sm-3">Note</th>
+						<th className="col-sm-2">Task</th>
+						<th className="">Deadline</th>
+						<th className="">Assignee</th>
+						<th className="">Assigner</th>
+						<th className="">Awaiting</th>
+						<th className="col-sm-4">Note</th>
 						<th></th>
 					</tr>
 				</thead>
